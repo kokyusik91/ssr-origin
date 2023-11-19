@@ -11,8 +11,7 @@ const fetchData = async () => {
 };
 
 // 최초 서버에서 그려주는 html 페이지
-export const generateHTML = async ({ todoItems }) => {
-  console.log(todoItems);
+export const generateHTML = async (path, model) => {
   const data = await fetchData();
   return `
   <!DOCTYPE html>
@@ -24,13 +23,16 @@ export const generateHTML = async ({ todoItems }) => {
   <body>
     <div id="app">
       <h1>서버에서 처음에 렌더링한 투두 html임 💻</h1>
-      ${App(todoItems)}
+      ${App(path, model)}
     </div>
     <div>
       <h1>서버에서 fetch후 렌더링한 html임 💻</h1>
       ${PostList(data)}
     </div>
-    <script>window.__INITIAL_MODEL__ = ${JSON.stringify({ todoItems })}</script>
+    <script>window.__INITIAL_MODEL__ = ${JSON.stringify({
+      todoItems: model.todoItems,
+    })}</script>
+
     <script src="./src/main.js" type="module"></script>
   </body>
   </html>

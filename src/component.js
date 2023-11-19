@@ -19,7 +19,7 @@ export const Button = (param) =>
  * @param {*} todoItems
  * @returns
  */
-export const App = (todoItems) => `
+export const Home = (todoItems) => `
   ${Button({ id: 'add', text: '아이템 추가' })}
   ${Button({ id: 'delete', text: '아이템 삭제' })}
   ${TodoList(todoItems)}
@@ -33,4 +33,33 @@ export const PostItem = (post) => `<li>
 
 export const PostList = (posts) => {
   return `<ul>${posts.map(PostItem).join('')}</ul>`;
+};
+
+export const DefaultLayout = (children) => `
+  <main>
+    <h1>Todo App</h1>
+    <header>
+      <nav>
+        <a href="/">메인페이지</a>
+        <a href="/sub">서브페이지</a>
+      </nav>
+    </header>
+    <section style="margin: 30px 0">
+      ${children}
+    </section>
+    <footer>
+      <p>Copyright &copy; 2023 곡식곡식 🧑🏼‍💻</p
+    </footer>
+  </main>
+`;
+
+// path에 따라 다른 html 문자열을 내려줌.
+export const App = (path, model) => {
+  if (path === '/') {
+    return DefaultLayout(Home(model.todoItems));
+  } else if (path === '/sub') {
+    return DefaultLayout(`<p>서브페이지 입니다.</p>`);
+  } else {
+    return DefaultLayout(`<p>404</p>`);
+  }
 };

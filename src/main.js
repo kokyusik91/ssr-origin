@@ -39,13 +39,29 @@ async function syncServerModel() {
 
 // 클라이언트로 넘어온 코드 다운받으면
 function render() {
+  const path = location.pathname;
   // app DOM을 가져온다.
-
   const $app = document.querySelector('#app');
   // model.js에 있는 todoItems을 넣어줌.
   $app.innerHTML = `<h1>클라이언트에서 그려지는 html 🧑🏼‍💻</h1>${App(
-    model.todoItems
+    path,
+    model
   )}`;
+
+  document.querySelectorAll('a').forEach(($a) => {
+    $a.addEventListener('click', (event) => {
+      const path = $a.getAttribute('href');
+      //
+      if ($a.href === path) {
+        return;
+      }
+      event.preventDefault();
+      history.pushState(null, null, path);
+      render();
+    });
+  });
+
+  if (path !== '/') return;
 
   $app.querySelector('#add').onclick = async () => {
     model.addTodoItem('새로운 아이템');
@@ -61,6 +77,8 @@ function render() {
 function main() {
   model.init(window.__INITIAL_MODEL__);
   render();
+
+  window.addEventListener('popstate', render);
 }
 
 main();
